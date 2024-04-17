@@ -1,0 +1,116 @@
+---
+title: "HW6SeleznevaDK"
+output: html_document
+date: "2024-04-17"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Задание 1
+
+```{r}
+# Задаем параметры 
+
+# Уровень значимости (вероятность ошибки первого рода)
+alpha <- 0.05
+# Вероятность ошибки второго рода
+beta <- 0.2
+# Drop-out rate
+dropout_rate <- 0.1
+# Стандартное отклонение
+sd <- 0.20
+# Разница средних
+e <- 0.1
+# Клинически значимая разница
+delta <- 0.25
+
+# Вычисляем критические значения Z для нормального распределения
+Z_alpha_2 <- qnorm(1 - alpha / 2)  # Z-значение для двустороннего теста
+Z_beta <- qnorm(1 - beta)             # Z-значение для мощности
+
+```
+
+```{r}
+# Рассчитываем выборку для исследования 
+sample_size <- ((Z_alpha_2 + Z_beta)^2 * sd^2) / (2 * (delta - abs(e))^2)
+
+# Рассчет с поправкой на drop-out rate
+sample_size_dropout_adjust <- ceiling(sample_size / (1 - dropout_rate))
+
+# Рассчет полной выборки
+full_sample_size <- sample_size_dropout_adjust * 2
+
+# Выводим результат
+cat('Размер выборки для n1=n2:', sample_size_dropout_adjust, '\n')
+cat('Общий размер выборки n:', full_sample_size, '\n')
+
+
+```
+
+# Задание 2
+
+```{r}
+# Установка параметров
+# Доля ответов для препаратов 
+p1 <- 0.85
+p2 <- 0.65
+# Клинически значимая разница
+delta <- -0.1
+# вероятность ошибки первого рода
+alpha <- 0.05
+# вероятность ошибки второго рода 
+beta <- 0.20
+
+# Расчёт Z-значений
+Z_alpha_2 <- qnorm(1 - alpha / 2)
+Z_beta <- qnorm(1 - beta)
+
+# Рассчет выборки для исследования 
+sample_size <- ((Z_alpha_2 + Z_beta)^2 * (p1 * (1 - p1) + p2 * (1 - p2))) / ((p1 - p2 - delta)^2)
+
+# Рассчет с поправкой на drop-out rate
+sample_size_dropout_adjust <- ceiling(sample_size / (1 - dropout_rate))
+
+# Рассчет полной выборки
+full_sample_size <- sample_size_dropout_adjust * 2
+
+# Выводим результат
+cat('Размер выборки для n1=n2:', sample_size_dropout_adjust, '\n')
+cat('Общий размер выборки n:', full_sample_size, '\n')
+
+
+
+```
+
+# Задание 3
+
+```{r}
+# Установка параметров
+HR <- 2
+d <- 0.8
+p1 <- 0.5
+p2 <- 0.5
+alpha <- 0.05
+beta <- 0.20
+
+# Расчёт Z-значений
+Z_alpha_2 <- qnorm(1 - alpha / 2)
+Z_beta <- qnorm(1 - beta)
+
+# Расчет размера выборки для каждой группы
+sample_size <- ((Z_alpha_2 + Z_beta)^2) / (log(HR)^2 * p1 * p2 * d)
+
+# Рассчет с поправкой на drop-out rate
+sample_size_dropout_adjust <- ceiling(sample_size / (1 - dropout_rate))
+
+# Рассчет полной выборки
+full_sample_size <- sample_size_dropout_adjust * 2
+
+# Выводим результат
+cat('Размер выборки для n1=n2:', sample_size_dropout_adjust, '\n')
+cat('Общий размер выборки n:', full_sample_size, '\n')
+
+
+```
